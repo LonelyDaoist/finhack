@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 8000;
 app.use(express.urlencoded());
 app.use(express.json());
 
-app.use("/",express.static("public"));
+app.use("/",express.static("public/finloans"));
 
 app.post("/submit",(req,res) => {
 	res.send(req.body.name);
@@ -15,6 +15,11 @@ app.post("/submit",(req,res) => {
 
 app.get("/python",(req,res) => {
 	const process = spawn("python3",["scripts/script.py"]);
+	process.stdout.on("data", data => res.json({result:data.toString()}));
+});
+
+app.get("/empreinte",(req,res) => {
+	const process = spawn("python3",["scripts/empreinte.py"]);
 	process.stdout.on("data", data => res.json({result:data.toString()}));
 });
 
